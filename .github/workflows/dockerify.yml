@@ -17,11 +17,8 @@ env:
 jobs:
   dockerify:
     runs-on: ubuntu-latest
-    name: Dockerify with Jupyter support
-    steps:
-      - name: Docker Login
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-      
+    name: Build image and release
+    steps:      
       - name: Checkout the repo
         uses: actions/checkout@v3.5.3
         with:
@@ -37,6 +34,10 @@ jobs:
         run: |
           docker build -t pikalab/${{ env.PROJECT_NAME }}:latest .
         shell: bash
+
+      - name: Docker Login
+        if: ${{ steps.compute-next-version.outputs.will-release }}
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
       
       - name: Release Image on Docker Hub
         if: ${{ steps.compute-next-version.outputs.will-release }}
