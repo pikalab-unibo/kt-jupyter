@@ -1,0 +1,39 @@
+name: CI/CD
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+    paths-ignore:
+      - '.gitignore'
+      - '.mergify.yml'
+      - 'CHANGELOG.md'
+      - 'LICENSE'
+      - 'README.md'
+      - 'renovate.json'
+  pull_request:
+  workflow_dispatch:
+env:
+  PROJECT_NAME: kt-jupyter
+jobs:
+  dockerify:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Dockerify with Jupyter support
+    steps:
+      - name: Docker Login
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Checkout the repo
+        uses: actions/checkout@v3.5.3
+        with:
+          fetch-depth: 0
+
+      - name: Create Docker Image
+        run: |
+          docker build -t pikalab/${{ env.PROJECT_NAME }}:latest ."
+        shell: bash
+
+      - name: Release Image on Docker Hub
+        run: |
+          npm install
+          npx semantic-release
