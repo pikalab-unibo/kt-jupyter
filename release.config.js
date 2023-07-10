@@ -1,8 +1,9 @@
 var project = "pikalab/kt-jupyter"
+var version = process.env.ENFORCE_VERSION
 
 var publishCmd = `
-docker tag ${project}:latest ${project}:${nextRelease.version} || exit 1
-docker push ${project}:${nextRelease.version} || exit 2
+docker tag ${project}:latest ${project}:${version} || exit 1
+docker push ${project}:${version} || exit 2
 docker push ${project}:latest || exit 3
 `
 
