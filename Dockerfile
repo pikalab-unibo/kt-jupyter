@@ -4,7 +4,7 @@ RUN apk add openjdk17
 RUN apk add python3 py3-pip
 RUN apk add jupyter-notebook
 RUN pip install kotlin-jupyter-kernel 
-RUN pip install jupyter-console
+# RUN pip install jupyter-console
 WORKDIR /home
 COPY libs .mylibs
 ENV JUPYTER_OPTIONS="--allow-root --NotebookApp.allow_origin='*' --NotebookApp.ip=0.0.0.0"
