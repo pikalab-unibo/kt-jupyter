@@ -1,4 +1,4 @@
-FROM alpine:3.18.11
+FROM alpine:3.21.2
 RUN apk update
 RUN apk add openjdk17
 RUN apk add python3 py3-pip
