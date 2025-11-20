@@ -26,7 +26,7 @@ jobs:
 
       - name: Compute next release version
         id: compute-next-version
-        uses: nicolasfara/precompute-semantic-release-version-action@1.0.2
+        uses: nicolasfara/precompute-semantic-release-version-action@2.0.2
         with:
           github-token: ${{ github.token }}
       
